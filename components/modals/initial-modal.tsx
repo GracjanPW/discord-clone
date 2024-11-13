@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
-import * as z from "zod"
-import { zodResolver} from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { FileUpload } from "../file-upload";
 
 import {
   Dialog,
@@ -10,48 +12,47 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-  DialogDescription
-} from "@/components/ui/dialog"
+  DialogDescription,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-  FormLabel
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
+  FormLabel,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
-  name: z.string().min(1,{
-    message:"Server name is required"
+  name: z.string().min(1, {
+    message: "Server name is required",
   }),
-  imageUrl: z.string().min(1,{
-    message:"Server image is required"
-  })
-})
+  imageUrl: z.string().min(1, {
+    message: "Server image is required",
+  }),
+});
 
-export const InitialModal =()=>{
-  const [isMounted, setisMounted] = useState(false)
+export const InitialModal = () => {
+  const [isMounted, setisMounted] = useState(false);
   const form = useForm({
-    resolver:zodResolver(formSchema),
-    defaultValues:{
-      name:"",
-      imageUrl:"",
-    }
-  })
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      imageUrl: "",
+    },
+  });
 
-  const isLoading = form.formState.isSubmitting
+  const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) =>{
-    console.log(values)
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+  };
   useEffect(() => {
-    setisMounted(true)
-  }, [])
-  if (!isMounted) return null
+    setisMounted(true);
+  }, []);
+  if (!isMounted) return null;
   return (
     <Dialog open>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
@@ -64,18 +65,30 @@ export const InitialModal =()=>{
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
-                TODO: Image uplaod
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-              <FormField 
+              <FormField
                 control={form.control}
                 name="name"
-                render={({field})=>(
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
                       Server name
@@ -88,22 +101,19 @@ export const InitialModal =()=>{
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-                <Button 
-                  variant={'primary'}
-                  disabled={isLoading}
-                >
-                  Create
-                </Button>
+              <Button variant={"primary"} disabled={isLoading}>
+                Create
+              </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
