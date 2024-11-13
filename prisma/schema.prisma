@@ -23,7 +23,7 @@ model Profile {
   updatedAt DateTime  @updatedAt
   servers   Server[]
   members   Member[]
-  Channels  Channel[]
+  channels  Channel[]
 }
 
 model Server {
@@ -36,7 +36,7 @@ model Server {
   updatedAt  DateTime  @updatedAt
   profile    Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
   members    Member[]
-  Channels   Channel[]
+  channels   Channel[]
 
   @@index([profileId])
 }
