@@ -3,14 +3,14 @@ import {auth} from "@clerk/nextjs/server"
 import { db } from "./db"
 
 export const currentProfile = async ()=>{
-  const {userId} = await auth()
+  const {userId, redirectToSignIn} = await auth()
 
-  if (!userId) return null
+  if (!userId) return {profile:null, redirectToSignIn}
 
   const profile = await db.profile.findUnique({
     where:{
       userId
     }
   })
-  return profile
+  return {profile,redirectToSignIn}
 }

@@ -9,8 +9,8 @@ import { ThemeToggle } from "../theme-toggle";
 import { UserButton } from "@clerk/nextjs";
 
 export const NavigationSidebar = async () => {
-  const profile = await currentProfile();
-  if (!profile) return redirect("/");
+  const {profile,redirectToSignIn} = await currentProfile();
+  if (!profile) return redirectToSignIn();
   const servers = await db.server.findMany({
     where: {
       members: {

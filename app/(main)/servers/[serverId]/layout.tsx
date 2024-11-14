@@ -9,7 +9,7 @@ type Props = {
 };
 
 const ServerIdLayout = async ({ children, params }: Props) => {
-  const profile = await currentProfile();
+  const {profile} = await currentProfile();
   if (!profile) return redirect("/");
 
   const server = await db.server.findUnique({

@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 export async function POST(req: Request) {
   try {
     const { name, imageUrl } = await req.json();
-    const profile = await currentProfile();
+    const {profile} = await currentProfile();
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(server);
   } catch (error) {
-    console.error("[SERVER_POST", error);
+    console.error("[SERVER_POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
