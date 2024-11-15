@@ -9,6 +9,7 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { SocketProvider } from "@/components/providers/socket-provider";
 
 const sans = Open_Sans({ subsets: ["latin"] });
 
@@ -46,8 +47,10 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="discord-theme"
             >
-            <ModalProvider/>
-            {children}
+              <SocketProvider>
+                <ModalProvider/>
+                {children}
+              </SocketProvider>
           </ThemeProvider>
         </body>
       </html>
