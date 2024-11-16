@@ -30,6 +30,7 @@ const formSchema = z.object({
   fileUrl: z.string().min(1, {
     message: "Server image is required",
   }),
+  fileType: z.string(),
 });
 
 export const MessageFileModal = () => {
@@ -41,6 +42,7 @@ export const MessageFileModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fileUrl: "",
+      fileType: ""
     },
   });
 
@@ -93,6 +95,8 @@ export const MessageFileModal = () => {
                           endpoint="messageFile"
                           value={field.value}
                           onChange={field.onChange}
+                          onFileTypeChange={(type?:string) => form.setValue("fileType", type||"")}
+                          fileType={form.getValues("fileType")}
                         />
                       </FormControl>
                       <FormMessage />

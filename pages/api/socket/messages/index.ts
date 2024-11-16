@@ -12,7 +12,7 @@ export default async function handler(
   }
   try {
     const profile = await currentProfile(req);
-    const { content, fileUrl } = req.body;
+    const { content, fileUrl, fileType } = req.body;
     const { serverId, channelId } = req.query;
     if (!profile) {
       return res.status(400).json({ error: "Not authorized" });
@@ -66,6 +66,7 @@ export default async function handler(
       data: {
         content,
         fileUrl,
+        fileType,
         channelId: channel.id,
         memberId: member.id,
       },
